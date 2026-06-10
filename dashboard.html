@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Workspace | AuthSpace</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Manage your AuthSpace metrics. Access session logs, customize security configurations, and track system health.">
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- Dynamic Nebula Backdrop -->
+  <div class="space-background"></div>
+  <div class="grid-overlay"></div>
+
+  <div class="dashboard-container">
+    <!-- Mobile Sidebar Drawer Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Sidebar Navigation Drawer -->
+    <aside class="sidebar" id="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="fa-solid fa-cube"></i>
+        </div>
+        <span class="sidebar-brand-name text-gradient">AuthSpace</span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-item active">
+          <i class="fa-regular fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-regular fa-bell"></i>
+          <span>Notifications</span>
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-regular fa-user"></i>
+          <span>User Profile</span>
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Workspace</span>
+        </a>
+        <a href="#" class="menu-item">
+          <i class="fa-regular fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-avatar" id="sidebar-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-username">Loading...</div>
+          <div class="user-role">Standard Member</div>
+        </div>
+        <button type="button" class="btn-logout-icon" id="btn-logout" aria-label="Sign Out">
+          <i class="fa-regular fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="main-content">
+      <!-- Dashboard Top Header Bar -->
+      <header class="dashboard-header">
+        <div class="header-actions">
+          <button type="button" class="btn-menu-toggle" id="btn-sidebar-toggle" aria-label="Toggle Sidebar Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="header-title-block">
+            <h2 id="header-greeting">Overview</h2>
+            <p id="dashboard-date">Wednesday, June 10, 2026</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button type="button" class="action-icon-btn" aria-label="View notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge-dot"></span>
+          </button>
+          <button type="button" class="action-icon-btn" aria-label="User Account Options">
+            <i class="fa-regular fa-user"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Welcome Greeting Hero Banner -->
+      <section class="welcome-banner">
+        <div class="welcome-banner-content">
+          <h1>Welcome Back, <span class="text-gradient" id="welcome-username">User</span>!</h1>
+          <p>Your workspace is updated and fully active. Check your analytics metrics, configure authentication keys, or run diagnostics checks.</p>
+          <a href="#" class="btn-action">
+            <span>Get Started</span>
+            <i class="fa-regular fa-arrow-right"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- Stats Grid -->
+      <section class="stats-grid">
+        <!-- Card 1 -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Session Status</span>
+            <div class="stat-icon stat-icon-success">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+          </div>
+          <div class="stat-value">Active</div>
+          <div class="stat-footer">
+            <span class="trend-up"><i class="fa-solid fa-circle"></i> Secure</span>
+            <span style="color: hsl(var(--text-muted));">Connection encrypted</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Security Rating</span>
+            <div class="stat-icon stat-icon-primary">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+          </div>
+          <div class="stat-value">98%</div>
+          <div class="stat-footer">
+            <span class="trend-up"><i class="fa-solid fa-arrow-up"></i> +2.4%</span>
+            <span style="color: hsl(var(--text-muted));">from last week</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Simulated Users</span>
+            <div class="stat-icon stat-icon-secondary">
+              <i class="fa-solid fa-users"></i>
+            </div>
+          </div>
+          <div class="stat-value" id="stats-total-users">0</div>
+          <div class="stat-footer">
+            <span class="trend-up"><i class="fa-solid fa-arrow-up"></i> +1</span>
+            <span style="color: hsl(var(--text-muted));">your account added</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Active Login IP</span>
+            <div class="stat-icon stat-icon-warning">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+          </div>
+          <div class="stat-value" style="font-size: 20px; margin-top: 10px; margin-bottom: 15px;">127.0.0.1 (Local)</div>
+          <div class="stat-footer">
+            <span>Chrome / Windows OS</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Details Section (Charts & Activity Log) -->
+      <section class="details-grid">
+        <!-- Interactive Chart Card -->
+        <div class="details-card">
+          <div class="card-title-row">
+            <h3>Login Frequency Index</h3>
+            <span style="font-size: 12px; color: hsl(var(--text-muted));">Updated live</span>
+          </div>
+          
+          <div class="chart-container">
+            <svg class="chart-svg" viewBox="0 0 500 220" preserveAspectRatio="none">
+              <defs>
+                <!-- Line Gradient -->
+                <linearGradient id="chart-gradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="hsl(var(--primary))" />
+                  <stop offset="100%" stop-color="hsl(var(--secondary))" />
+                </linearGradient>
+                <!-- Fill Gradient -->
+                <linearGradient id="chart-glow-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="hsl(var(--primary))" />
+                  <stop offset="100%" stop-color="transparent" />
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line class="chart-grid-line" x1="0" y1="55" x2="500" y2="55" />
+              <line class="chart-grid-line" x1="0" y1="110" x2="500" y2="110" />
+              <line class="chart-grid-line" x1="0" y1="165" x2="500" y2="165" />
+              
+              <!-- Shading under the graph line -->
+              <path class="chart-fill-path" d="M 0,220 L 0,170 Q 80,60 160,110 T 320,50 T 480,120 L 500,120 L 500,220 Z" />
+              
+              <!-- Animated Graph Line -->
+              <path class="chart-path" d="M 0,170 Q 80,60 160,110 T 320,50 T 480,120 L 500,120" />
+            </svg>
+          </div>
+          <div class="chart-labels">
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+          </div>
+        </div>
+
+        <!-- Activity Log Card -->
+        <div class="details-card">
+          <div class="card-title-row">
+            <h3>Recent Actions</h3>
+          </div>
+          <div class="activity-list" id="activity-log-container">
+            <!-- Dynamic entries loaded via js -->
+            <div class="activity-item">
+              <div class="activity-badge activity-badge-success">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="activity-details">
+                <div class="activity-text">Secure Session Initialized</div>
+                <div class="activity-time">Just Now</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-badge activity-badge-primary">
+                <i class="fa-solid fa-user-shield"></i>
+              </div>
+              <div class="activity-details">
+                <div class="activity-text">Local authorization token generated</div>
+                <div class="activity-time">2 mins ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-badge activity-badge-warning">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <div class="activity-details">
+                <div class="activity-text">Database verification check passed</div>
+                <div class="activity-time">10 mins ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | AuthSpace</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Register an account with AuthSpace. Enjoy secure authorization, interactive dashboard statistics, and premium user experience.">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <!-- Dynamic Nebula Backdrop -->
+  <div class="space-background"></div>
+  <div class="grid-overlay"></div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card" id="register-card">
+      <div class="auth-header">
+        <div class="auth-logo">
+          <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <h1>Get Started</h1>
+        <p>Create a secure account to access the dashboard</p>
+      </div>
+
+      <!-- General Form Alert Box -->
+      <div id="form-alert" class="form-alert hide">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="alert-message"></span>
+      </div>
+
+      <form class="auth-form" id="register-form" novalidate>
+        <!-- Full Name Group -->
+        <div class="input-group">
+          <div class="input-field-wrapper">
+            <input type="text" id="name" class="input-field" placeholder=" " required autocomplete="name">
+            <i class="fa-regular fa-user input-icon"></i>
+            <label for="name" class="input-label">Full Name</label>
+          </div>
+          <div id="name-validation" class="validation-message">
+            <i class="fa-solid fa-circle-xmark"></i> Please enter your full name.
+          </div>
+        </div>
+
+        <!-- Email Group -->
+        <div class="input-group">
+          <div class="input-field-wrapper">
+            <input type="email" id="email" class="input-field" placeholder=" " required autocomplete="email">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <label for="email" class="input-label">Email Address</label>
+          </div>
+          <div id="email-validation" class="validation-message">
+            <i class="fa-solid fa-circle-xmark"></i> Please enter a valid email address.
+          </div>
+        </div>
+
+        <!-- Password Group -->
+        <div class="input-group">
+          <div class="input-field-wrapper">
+            <input type="password" id="password" class="input-field" placeholder=" " required autocomplete="new-password">
+            <i class="fa-regular fa-lock input-icon"></i>
+            <label for="password" class="input-label">Password</label>
+            <button type="button" class="password-toggle" id="password-toggle-btn" aria-label="Toggle Password Visibility">
+              <i class="fa-regular fa-eye" id="password-eye-icon"></i>
+            </button>
+          </div>
+          
+          <!-- Strength Meter Bar -->
+          <div class="password-strength-container">
+            <div class="strength-label-row">
+              <span>Password strength:</span>
+              <span id="strength-text" style="font-weight: 600;">Very Weak</span>
+            </div>
+            <div class="strength-meter" id="strength-meter-bar">
+              <div class="strength-segment"></div>
+              <div class="strength-segment"></div>
+              <div class="strength-segment"></div>
+              <div class="strength-segment"></div>
+            </div>
+          </div>
+
+          <!-- Requirements Checklist -->
+          <div class="password-checklist">
+            <div class="checklist-title">Password must contain:</div>
+            <div class="checklist-item" id="req-length">
+              <i class="fa-regular fa-circle"></i> At least 8 characters
+            </div>
+            <div class="checklist-item" id="req-upper">
+              <i class="fa-regular fa-circle"></i> One uppercase letter
+            </div>
+            <div class="checklist-item" id="req-number">
+              <i class="fa-regular fa-circle"></i> One number
+            </div>
+            <div class="checklist-item" id="req-special">
+              <i class="fa-regular fa-circle"></i> One special character
+            </div>
+          </div>
+
+          <div id="password-validation" class="validation-message">
+            <i class="fa-solid fa-circle-xmark"></i> Password does not meet all requirements.
+          </div>
+        </div>
+
+        <!-- Confirm Password Group -->
+        <div class="input-group">
+          <div class="input-field-wrapper">
+            <input type="password" id="confirm-password" class="input-field" placeholder=" " required autocomplete="new-password">
+            <i class="fa-regular fa-lock-keyhole input-icon"></i>
+            <label for="confirm-password" class="input-label">Confirm Password</label>
+            <button type="button" class="password-toggle" id="confirm-password-toggle-btn" aria-label="Toggle Confirm Password Visibility">
+              <i class="fa-regular fa-eye" id="confirm-password-eye-icon"></i>
+            </button>
+          </div>
+          <div id="confirm-validation" class="validation-message">
+            <i class="fa-solid fa-circle-xmark"></i> Passwords do not match.
+          </div>
+        </div>
+
+        <!-- Terms and Conditions Group -->
+        <div class="input-group">
+          <label class="checkbox-group" id="terms-wrapper">
+            <input type="checkbox" id="terms" required>
+            <span class="custom-checkbox">
+              <i class="fa-solid fa-check"></i>
+            </span>
+            <span>I agree to the <a href="#" class="link-highlight">Terms of Service</a> & <a href="#" class="link-highlight">Privacy Policy</a></span>
+          </label>
+          <div id="terms-validation" class="validation-message">
+            <i class="fa-solid fa-circle-xmark"></i> You must accept the terms to continue.
+          </div>
+        </div>
+
+        <!-- Register Button -->
+        <button type="submit" class="btn-auth" id="btn-submit">
+          <span id="btn-text">Create Account</span>
+          <span id="btn-spinner" class="spinner hide"></span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html" class="link-highlight">Log In</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>
