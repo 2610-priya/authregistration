@@ -2,7 +2,7 @@
  * Auth and Form Validation Utilities (Integrated with Java Spring Boot API)
  */
 
-const API_BASE_URL = 'http://192.168.1.40:8080/api/auth';
+const API_BASE_URL = 'https://authregistration.onrender.com/api/auth';
 
 const STORAGE_KEYS = {
   SESSION: 'auth_system_current_session'
