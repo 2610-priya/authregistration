@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Access your secure user account dashboard.">
+    <title>Antigravity Auth - Account Sign In</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="brand">
+                Antigravity Auth <span class="brand-dot"></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="register.html" class="nav-btn btn-primary">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Don't have an account? <a href="register.html">Sign up free</a></p>
+                </div>
+                
+                <form id="login-form" novalidate>
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-container">
+                            <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+                        </div>
+                        <div class="error-feedback" id="email-error"></div>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-container">
+                            <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <span>👁️‍🗨️</span>
+                            </button>
+                        </div>
+                        <div class="error-feedback" id="password-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="nav-btn btn-primary form-submit-btn">Sign In to Dashboard</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Antigravity Auth Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Configurations & Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Protect this guest-only route
+        protectRoute('guest');
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Setup password toggle visibility action
+            setupPasswordToggles();
+
+            const form = document.getElementById("login-form");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+
+            // Live field validation listeners
+            emailInput.addEventListener("input", () => FormValidator.validateEmail(emailInput));
+            passwordInput.addEventListener("input", () => {
+                if (passwordInput.value.length > 0) {
+                    FormValidator.clearError(passwordInput);
+                }
+            });
+
+            // Form submission
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                // Run validation checks
+                const isEmailValid = FormValidator.validateEmail(emailInput);
+                const isPasswordValid = passwordInput.value.trim() !== "";
+                
+                if (!isPasswordValid) {
+                    FormValidator.showError(passwordInput, "Password is required");
+                }
+
+                if (!isEmailValid || !isPasswordValid) {
+                    showToast("Please fix the validation errors before logging in.", "error");
+                    return;
+                }
+
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                try {
+                    // Start progress state
+                    submitBtn.textContent = "Authenticating...";
+                    submitBtn.disabled = true;
+
+                    const response = await AuthAPI.login(
+                        emailInput.value.trim(),
+                        passwordInput.value
+                    );
+
+                    // Save session details
+                    AuthStorage.setSession(
+                        response.token,
+                        response.email,
+                        response.fullName
+                    );
+
+                    showToast("Successfully authenticated! Redirecting...", "success");
+
+                    setTimeout(() => {
+                        window.location.href = "profile.html";
+                    }, 1200);
+
+                } catch (error) {
+                    showToast(error.message || "Invalid email or password", "error");
+                    // Highlight invalid fields
+                    FormValidator.showError(emailInput, "Verify email is correct");
+                    FormValidator.showError(passwordInput, "Verify password is correct");
+                    
+                    // Reset button state
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

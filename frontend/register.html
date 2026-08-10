@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register a secure user profile credentials.">
+    <title>Antigravity Auth - Account Registration</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="brand">
+                Antigravity Auth <span class="brand-dot"></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="login.html" class="nav-btn btn-outline">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Already have an account? <a href="login.html">Sign in</a></p>
+                </div>
+                
+                <form id="register-form" novalidate>
+                    <!-- Full Name Field -->
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <div class="input-container">
+                            <input type="text" id="fullName" class="form-input" placeholder="John Doe" required>
+                        </div>
+                        <div class="error-feedback" id="name-error"></div>
+                    </div>
+                    
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-container">
+                            <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+                        </div>
+                        <div class="error-feedback" id="email-error"></div>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-container">
+                            <input type="password" id="password" class="form-input" placeholder="At least 8 characters" required>
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <span>👁️‍🗨️</span>
+                            </button>
+                        </div>
+                        <div class="error-feedback" id="password-error"></div>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="input-container">
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="Repeat your password" required>
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <span>👁️‍🗨️</span>
+                            </button>
+                        </div>
+                        <div class="error-feedback" id="confirm-password-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="nav-btn btn-primary form-submit-btn">Create Secure Account</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Antigravity Auth Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Configurations & Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Protect this guest-only route
+        protectRoute('guest');
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Setup password toggle visibility buttons
+            setupPasswordToggles();
+
+            const form = document.getElementById("register-form");
+            const fullNameInput = document.getElementById("fullName");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const confirmInput = document.getElementById("confirmPassword");
+
+            // Live validation listeners
+            fullNameInput.addEventListener("input", () => FormValidator.validateName(fullNameInput));
+            emailInput.addEventListener("input", () => FormValidator.validateEmail(emailInput));
+            passwordInput.addEventListener("input", () => {
+                FormValidator.validatePassword(passwordInput);
+                if (confirmInput.value !== "") {
+                    FormValidator.validateConfirmPassword(passwordInput, confirmInput);
+                }
+            });
+            confirmInput.addEventListener("input", () => FormValidator.validateConfirmPassword(passwordInput, confirmInput));
+
+            // Form submission
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                // Run validation checks on submit
+                const isNameValid = FormValidator.validateName(fullNameInput);
+                const isEmailValid = FormValidator.validateEmail(emailInput);
+                const isPasswordValid = FormValidator.validatePassword(passwordInput);
+                const isConfirmValid = FormValidator.validateConfirmPassword(passwordInput, confirmInput);
+
+                if (!isNameValid || !isEmailValid || !isPasswordValid || !isConfirmValid) {
+                    showToast("Please correct validation errors before registering.", "error");
+                    return;
+                }
+
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                try {
+                    // Start progress state
+                    submitBtn.textContent = "Registering account...";
+                    submitBtn.disabled = true;
+
+                    await AuthAPI.register(
+                        fullNameInput.value.trim(),
+                        emailInput.value.trim(),
+                        passwordInput.value
+                    );
+
+                    showToast("Registration successful! Redirecting to login...", "success");
+
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1500);
+
+                } catch (error) {
+                    showToast(error.message || "Email address is already in use.", "error");
+                    if (error.message && error.message.includes("Email")) {
+                        FormValidator.showError(emailInput, "Email address already registered");
+                    }
+                    
+                    // Reset button state
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

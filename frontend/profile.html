@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View your secure dashboard profile credentials.">
+    <title>Antigravity Auth - User Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="brand">
+                Antigravity Auth <span class="brand-dot"></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="#" id="nav-logout-btn" class="nav-btn btn-outline">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="profile-card" id="profile-card" style="display: none;">
+            <div class="profile-header">
+                <div class="profile-avatar" id="user-avatar">-</div>
+                <div class="profile-title">
+                    <h2 id="welcome-title">Welcome User</h2>
+                    <p id="user-role-label">Platform Member</p>
+                </div>
+            </div>
+            
+            <div class="profile-details">
+                <!-- User ID -->
+                <div class="detail-item">
+                    <div class="detail-label">Member Identification</div>
+                    <div class="detail-val" id="profile-id">-</div>
+                </div>
+
+                <!-- Full Name -->
+                <div class="detail-item">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-val" id="profile-name">-</div>
+                </div>
+
+                <!-- Email Address -->
+                <div class="detail-item">
+                    <div class="detail-label">Email Address</div>
+                    <div class="detail-val" id="profile-email">-</div>
+                </div>
+
+                <!-- Account Created Timestamp -->
+                <div class="detail-item">
+                    <div class="detail-label">Created At</div>
+                    <div class="detail-val" id="profile-created">-</div>
+                </div>
+            </div>
+
+            <button id="logout-card-btn" class="nav-btn btn-primary btn-outline" style="width: 100%; border-color: rgba(239, 68, 68, 0.4); color: var(--error); background: transparent; font-weight: 600;">
+                Sign Out of Session
+            </button>
+        </div>
+        
+        <!-- Loading Skeleton -->
+        <div id="loading-spinner" style="text-align: center;">
+            <div class="visual-sphere" style="width: 80px; height: 80px; margin: 0 auto 1.5rem auto;"></div>
+            <h3>Loading dashboard details...</h3>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Antigravity Auth Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Configurations & Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Protect this private dashboard route
+        protectRoute('private');
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const loadingSpinner = document.getElementById("loading-spinner");
+            const profileCard = document.getElementById("profile-card");
+            
+            const userAvatar = document.getElementById("user-avatar");
+            const welcomeTitle = document.getElementById("welcome-title");
+            const profileId = document.getElementById("profile-id");
+            const profileName = document.getElementById("profile-name");
+            const profileEmail = document.getElementById("profile-email");
+            const profileCreated = document.getElementById("profile-created");
+
+            const logoutNavBtn = document.getElementById("nav-logout-btn");
+            const logoutCardBtn = document.getElementById("logout-card-btn");
+
+            // Attach logout listeners
+            const handleLogout = (e) => {
+                e.preventDefault();
+                AuthAPI.logout();
+            };
+            logoutNavBtn.addEventListener("click", handleLogout);
+            logoutCardBtn.addEventListener("click", handleLogout);
+
+            try {
+                // Fetch profile data using stored JWT token
+                const profile = await AuthAPI.getProfile();
+
+                // Hydrate fields
+                profileId.textContent = `#${profile.id}`;
+                profileName.textContent = profile.fullName;
+                profileEmail.textContent = profile.email;
+                
+                // Format creation date: e.g. July 24, 2026, 10:15 PM
+                if (profile.createdAt) {
+                    const date = new Date(profile.createdAt);
+                    profileCreated.textContent = date.toLocaleString(undefined, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } else {
+                    profileCreated.textContent = "N/A";
+                }
+
+                // Hydrate avatar and titles
+                welcomeTitle.textContent = `Welcome, ${profile.fullName.split(" ")[0]}!`;
+                userAvatar.textContent = profile.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+
+                // Show details
+                loadingSpinner.style.display = "none";
+                profileCard.style.display = "block";
+
+            } catch (error) {
+                showToast("Your session has expired. Redirecting...", "error");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

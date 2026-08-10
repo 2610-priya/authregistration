@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure, scalable and modern authentication portal for your cloud applications.">
+    <title>Antigravity Auth - Secure Access Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="brand">
+                Antigravity Auth <span class="brand-dot"></span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <!-- Dynamically populated links -->
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li id="guest-links">
+                    <a href="login.html" class="nav-link">Sign In</a>
+                    <a href="register.html" class="nav-btn btn-primary">Get Started</a>
+                </li>
+                <li id="auth-links" style="display: none;">
+                    <a href="profile.html" class="nav-link">Dashboard</a>
+                    <a href="#" id="logout-btn" class="nav-btn btn-outline">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Content -->
+    <main>
+        <section class="hero-container">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span>✨</span> Multi-Tenant Secure Auth Layer
+                </div>
+                <h1>Secure Your Cloud Applications with <span>Antigravity Auth</span></h1>
+                <p>A production-ready full-stack login and registration engine. Featuring cryptographically secure password hashing, stateless token-based authorization (JWT), dynamic input validation, and adaptive responsive interfaces.</p>
+                <div class="hero-actions" id="hero-actions">
+                    <a href="register.html" class="nav-btn btn-primary" style="font-size: 1.1rem; padding: 0.85rem 2rem;">Create Free Account</a>
+                    <a href="login.html" class="nav-btn btn-outline" style="font-size: 1.1rem; padding: 0.85rem 2rem;">Sign In</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="visual-sphere"></div>
+                <div class="visual-card">
+                    <div class="visual-icon">🔒</div>
+                    <h3 style="font-weight: 600;">Stateless JWT Security</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 0 1.5rem;">Fully decoded client-side authentication headers using cryptographically signed JSON Web Tokens.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Antigravity Auth Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Configurations & Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const guestLinks = document.getElementById("guest-links");
+            const authLinks = document.getElementById("auth-links");
+            const heroActions = document.getElementById("hero-actions");
+            const logoutBtn = document.getElementById("logout-btn");
+
+            if (AuthStorage.isAuthenticated()) {
+                guestLinks.style.display = "none";
+                authLinks.style.display = "flex";
+                
+                // Update hero section actions if user is logged in
+                heroActions.innerHTML = `
+                    <a href="profile.html" class="nav-btn btn-primary" style="font-size: 1.1rem; padding: 0.85rem 2rem;">Go to Dashboard</a>
+                    <a href="#" id="hero-logout" class="nav-btn btn-outline" style="font-size: 1.1rem; padding: 0.85rem 2rem;">Sign Out</a>
+                `;
+
+                // Set up logout action for hero logout button
+                document.getElementById("hero-logout").addEventListener("click", (e) => {
+                    e.preventDefault();
+                    AuthAPI.logout();
+                });
+            }
+
+            // Set up main nav logout action
+            logoutBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                AuthAPI.logout();
+            });
+        });
+    </script>
+</body>
+</html>
