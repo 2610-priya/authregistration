@@ -1,0 +1,31 @@
+# Maven build output
+backend/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven wrapper
+.mvn/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Tools / local binaries (Maven installed locally)
+.tools/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+*.env
+.env
+
+# Logs
+*.log
+logs/
