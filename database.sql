@@ -1,6 +1,6 @@
 -- Create Database
-CREATE DATABASE IF NOT EXISTS login_system;
-USE login_system;
+-- CREATE DATABASE IF NOT EXISTS login_system;
+-- USE login_system;
 
 -- Create Users Table
 CREATE TABLE IF NOT EXISTS users (

@@ -6,7 +6,7 @@ backend/target/
 *.ear
 
 # Maven wrapper
-.mvn/
+# .mvn/
 
 # IDE files
 .idea/
