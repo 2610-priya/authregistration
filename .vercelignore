@@ -1,0 +1,9 @@
+# Exclude backend code and developer tools from Vercel deployment
+backend/
+database.sql
+server.ps1
+README.md
+.git/
+.vscode/
+.idea/
+.tools/
