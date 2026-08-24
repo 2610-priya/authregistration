@@ -102,11 +102,21 @@ function showToast(message, type = 'success') {
     }, 4500);
 }
 
+// --- API CONNECTIONS (SAFE FETCH HELPER) ---
+async function safeFetch(url, options) {
+    try {
+        return await fetch(url, options);
+    } catch (error) {
+        console.error("Network Fetch Error details:", error);
+        throw new Error(`API Connection Failed: Unable to connect to the backend server at ${url}. Please ensure the server is running and CORS is allowed.`);
+    }
+}
+
 // --- API ACTIONS (FETCH WRAPPERS) ---
 const AuthAPI = {
     async register(fullName, email, password) {
         const url = `${CONFIG.getApiBaseUrl()}/api/auth/register`;
-        const response = await fetch(url, {
+        const response = await safeFetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -123,7 +133,7 @@ const AuthAPI = {
 
     async login(email, password) {
         const url = `${CONFIG.getApiBaseUrl()}/api/auth/login`;
-        const response = await fetch(url, {
+        const response = await safeFetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -143,7 +153,7 @@ const AuthAPI = {
         if (!token) throw new Error("No authorization token found");
 
         const url = `${CONFIG.getApiBaseUrl()}/api/user/profile`;
-        const response = await fetch(url, {
+        const response = await safeFetch(url, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -164,7 +174,7 @@ const AuthAPI = {
 
         const url = `${CONFIG.getApiBaseUrl()}/api/auth/logout`;
         try {
-            await fetch(url, {
+            await safeFetch(url, {
                 method: "POST",
                 headers: {
                     "Authorization": token ? `Bearer ${token}` : ""
