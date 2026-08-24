@@ -2,7 +2,7 @@
 const CONFIG = {
     // Replace this URL with your actual deployed Render API backend URL.
     // Ensure it uses HTTPS and has NO trailing slash.
-    PRODUCTION_API_URL: "https://authregistration-backend.onrender.com",
+    PRODUCTION_API_URL: "https://authregistration-2.onrender.com",
     
     getApiBaseUrl() {
         const hostname = window.location.hostname;
